@@ -1,0 +1,14 @@
+LICENSE.md
+README.md
+pyproject.toml
+src/locallama.egg-info/PKG-INFO
+src/locallama.egg-info/SOURCES.txt
+src/locallama.egg-info/dependency_links.txt
+src/locallama.egg-info/requires.txt
+src/locallama.egg-info/top_level.txt
+src/locallama_detroix23/__init__.py
+src/locallama_detroix23/__main__.py
+src/locallama_detroix23/modules/__init__.py
+src/locallama_detroix23/modules/app.py
+src/locallama_detroix23/modules/chat.py
+src/locallama_detroix23/modules/controls.py

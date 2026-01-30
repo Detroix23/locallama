@@ -1,0 +1,12 @@
+{
+	"cSpell.words": [
+		"deepseek",
+		"dotenv",
+		"locallama",
+		"ollama"
+	],
+	"python.analysis.generateWithTypeAnnotation": true,
+	"python.analysis.inlayHints.functionReturnTypes": true,
+	"python.analysis.inlayHints.variableTypes": true,
+	"python.analysis.typeCheckingMode": "strict"
+}
