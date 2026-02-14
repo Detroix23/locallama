@@ -9,8 +9,7 @@ def main() -> None:
 	print("# Locallama.")
 
 	main_app = app.App(
-		"deepseek-r1:7b",
-		1
+		debug_level=1,
 	)
 
 	main_app.start()

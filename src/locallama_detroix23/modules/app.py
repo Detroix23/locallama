@@ -30,13 +30,10 @@ class App:
 
 	def __init__(
 		self, 
-		model: str,
 		debug_level: int,
 	) -> None:
 		dotenv.load_dotenv()
 
-		self.model = model
-		
 		host: str | None = os.getenv("HHN_OLLAMA_HOST")
 		self.host = host if host is not None else defaults.HOST
 		
@@ -51,6 +48,8 @@ class App:
 		self.user_chat = chat.Chat(self)
 		self.prompter = prompts.Prompter(self)
 		self.settings_manager = settings.Settings(self)
+
+		self.model = self.settings_manager.list_models_name()[0]
 
 
 	def start(self) -> None:

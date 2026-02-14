@@ -13,6 +13,8 @@ from locallama_detroix23.modules import (
 	controls,
 )
 
+COMMAND: str = "/"
+
 class Chat:
 	"""
 	# `Chat`.
@@ -77,5 +79,8 @@ class Chat:
 		"""
 		Reaction on a valid prompt.
 		"""
-		self.parent.prompter.send(self.prompt)
+		if self.prompt.startswith(COMMAND):
+			self.parent.settings_manager.command(self.prompt)
+		else:
+			self.parent.prompter.send(self.prompt)
 
