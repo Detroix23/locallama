@@ -2,6 +2,7 @@
 # Locallama.
 /src/locallama_detroix23/modules/prompts.py
 """
+
 import requests
 import json
 from typing import TYPE_CHECKING, Any, Final
@@ -33,7 +34,7 @@ class Prompter:
 		result: list[dict[str, Any]] = list()
 
 		request: requests.Response = requests.post(
-			f"http://{self.parent.host}:{self.parent.port}/api/generate",
+			f"{self.parent.url}generate",
 			json={
 				"model": self.parent.model,
 				"prompt": prompt

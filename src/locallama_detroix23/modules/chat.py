@@ -13,7 +13,6 @@ from locallama_detroix23.modules import (
 	controls,
 )
 
-
 class Chat:
 	"""
 	# `Chat`.
@@ -36,7 +35,9 @@ class Chat:
 		"""
 		try:
 			while True:
-				sys.stdout.write(f"\n{self.shell} ")
+				sys.stdout.write("\n\n")
+				controls.move_up(1)
+				sys.stdout.write(f"{self.shell} ")
 				sys.stdout.flush()
 
 				self.prompt = self.listen()
