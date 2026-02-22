@@ -4,6 +4,7 @@
 """
 
 import os
+
 import dotenv
 
 from locallama_detroix23.modules import (
@@ -57,9 +58,10 @@ class App:
 		print(f"Host: {self.host}")
 		print(f"Port: {self.port}")
 		print(f"Text encoding: {self.text_encoding}")
+
 		print(self.settings_manager.display_models())
-		
 		print("\n## Current.")
 		print(f"Model: {self.model}")
 		
 		self.user_chat.loop()
+		
