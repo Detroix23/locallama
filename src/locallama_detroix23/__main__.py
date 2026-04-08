@@ -5,7 +5,14 @@
 
 import requests
 
-from locallama_detroix23.modules import app
+try:
+	from locallama_detroix23.modules import app
+except ModuleNotFoundError:
+	print("(X) __main__.py No module named 'locallama_detroix23'.")
+	print("\nTips:")
+	print("  - Enable Python virtual environment.")
+	print("	 - Install the package locally with `pip install --editable .`.")
+	exit(1)
 
 def main() -> None:
 	print("# Locallama.")

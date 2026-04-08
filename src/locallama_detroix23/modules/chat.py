@@ -4,14 +4,12 @@
 """
 
 import sys
-from typing import TYPE_CHECKING
+import pprint
+from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
 	from locallama_detroix23.modules import app
-from locallama_detroix23.modules import (
-	debug,
-	controls,
-)
+from locallama_detroix23.modules import types, debug, controls
 
 COMMAND: str = "/"
 
@@ -22,13 +20,15 @@ class Chat:
 	"""
 	parent: 'app.App'
 	prompt: str
-	history: list[str]
+	history_ai_responses: list[str]
+	history_prompt: list[str]
 	shell: str
 
 	def __init__(self, parent: 'app.App') -> None:
 		self.parent = parent
 		self.prompt = ""
-		self.history = list()
+		self.history_ai_responses = list()
+		self.history_prompt = list()
 		self.shell = "[locallama]"
 
 	def loop(self) -> None:
@@ -46,12 +46,12 @@ class Chat:
 
 				debug.log(2, self.parent.debug_level, f"(?) modules.chat.Chat.loop() Prompt: {self.prompt}")
 
-				self.on_prompt()
+				result = self.on_prompt()
+				pprint.pprint(result)
 
 				sys.stdout.flush()
 
-
-				self.history.append(self.prompt)
+				self.history_prompt.append(self.prompt)
 
 		except KeyboardInterrupt:
 			print("\n(!) modules.chat.Chat.loop() Keyboard interruption.")
@@ -75,12 +75,16 @@ class Chat:
 		
 		return accepted
 
-	def on_prompt(self) -> None:
+	def on_prompt(self) -> tuple[types.ResponseType, Optional[list[dict[str, object]]]]:
 		"""
 		Reaction on a valid prompt.
+		Returns a `tuple` containing:
+		- 0. The `ResponseType`.
+		- 1. The prompt result content, `None` if there isn't.
 		"""
 		if self.prompt.startswith(COMMAND):
-			self.parent.settings_manager.command(self.prompt)
+			return (types.ResponseType.COMMAND, self.parent.settings_manager.command(self.prompt))
 		else:
-			self.parent.prompter.send(self.prompt)
+			return (types.ResponseType.AI_RESPONSE, self.parent.prompter.send(self.prompt))
+
 

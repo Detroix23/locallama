@@ -9,6 +9,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
 	from locallama_detroix23.modules import app
+from locallama_detroix23.modules import defaults
 
 class Settings:
 	"""
@@ -86,6 +87,7 @@ class Settings:
 
 			else:
 				print(f"(!) Argument: {arguments[index]}")	
+				self.command_help()
 			
 			index += 1
 
@@ -120,6 +122,11 @@ class Settings:
 		else:
 			print(f"(!) Option: {option}")
 
+	def command_help(self) -> None:
+		"""
+		Prints a help to commands.
+		"""
+		print(defaults.HELP_CHAT_COMMANDS)	
 
 	def list_models_name(self) -> list[str]:
 		"""

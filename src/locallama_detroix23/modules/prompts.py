@@ -5,7 +5,7 @@
 
 import requests
 import json
-from typing import TYPE_CHECKING, Any, Final
+from typing import TYPE_CHECKING, Final
 
 if TYPE_CHECKING:
 	from locallama_detroix23.modules import app
@@ -25,13 +25,13 @@ class Prompter:
 	def __init__(self, parent: 'app.App') -> None:
 		self.parent = parent
 
-	def send(self, prompt: str) -> list[dict[str, Any]]:
+	def send(self, prompt: str) -> list[dict[str, object]]:
 		"""
 		Send a prompt to Ollama:
 		- url: `http://{self.host}:{self.port}/api/generate`
 		- Returns: `list` of JSON (Python `dict`).
 		"""
-		result: list[dict[str, Any]] = list()
+		result: list[dict[str, object]] = list()
 
 		request: requests.Response = requests.post(
 			f"{self.parent.url}generate",
@@ -48,7 +48,7 @@ class Prompter:
 
 			if building[-1][-1] in {"\n", "\r"}:
 
-				load: dict[str, Any] = json.loads("".join(building))
+				load: dict[str, object] = json.loads("".join(building))
 				result.append(load)
 				
 				print(f"{self.extract_message(load)}", end="", flush=True)
@@ -61,17 +61,18 @@ class Prompter:
 
 		return result
 	
-	def extract_message(self, load: dict[str, Any]) -> str:
+	def extract_message(self, load: dict[str, object]) -> str:
 		"""
 		Get from a `load` what is to be printed to the user.
 		"""
 		message: str
 
 		if THINKING in load.keys() and load[THINKING] != "":
-			message = load[THINKING]
+			message = str(load[THINKING])
 		elif RESPONSE in load.keys():
-			message = load[RESPONSE]
+			message = str(load[RESPONSE])
 		else:
 			message = LOAD_NO_MESSAGE
 
 		return message
+
