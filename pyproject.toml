@@ -14,6 +14,7 @@ classifiers = [
 ]
 dependencies = [
     "dotenv",
+    "requests",
 ]
 readme = "README.md"
 license = "CC-BY-4.0"

@@ -3,7 +3,12 @@
 /src/locallama_detroix23/__main__.py
 """
 
+import os
+
 import requests
+import dotenv
+
+from locallama_detroix23.modules import support
 
 try:
 	from locallama_detroix23.modules import app
@@ -11,11 +16,13 @@ except ModuleNotFoundError:
 	print("(X) __main__.py No module named 'locallama_detroix23'.")
 	print("\nTips:")
 	print("  - Enable Python virtual environment.")
-	print("	 - Install the package locally with `pip install --editable .`.")
-	exit(1)
+	print("  - Install the package locally with `pip install --editable .`.")
+	exit(support.ExitCode.MODULE_ERROR)
 
 def main() -> None:
 	print("# Locallama.")
+
+	dotenv.load_dotenv()
 
 	try:
 		main_app = app.App(
@@ -26,11 +33,16 @@ def main() -> None:
 
 	except requests.exceptions.ConnectionError or requests.exceptions.ConnectTimeout as connection_error:
 		print("(X) __main__.main() Connection error !")
-		print("Full message:\n```")
+		print("Full message: ")
+		print("```")
 		print(connection_error)
 		print("```")
 
 		print("\nTips:")
-		print("  - Check that the server is running.\n")
+		print("  - Ensure that the server is running.")
+		print("  - Verify your environment variables: ")
+		print(f"    - `HHN_OLLAMA_HOST` = {os.getenv("HHN_OLLAMA_HOST")}")
+		print(f"    - `HHN_OLLAMA_PORT` = {os.getenv("HHN_OLLAMA_PORT")}")
+		exit(support.ExitCode.CONNECTION_ERROR)
 
 main()

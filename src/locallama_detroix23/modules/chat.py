@@ -9,9 +9,7 @@ from typing import TYPE_CHECKING, Optional
 
 if TYPE_CHECKING:
 	from locallama_detroix23.modules import app
-from locallama_detroix23.modules import types, debug, controls
-
-COMMAND: str = "/"
+from locallama_detroix23.modules import defaults, support, debug, controls
 
 class Chat:
 	"""
@@ -75,16 +73,16 @@ class Chat:
 		
 		return accepted
 
-	def on_prompt(self) -> tuple[types.ResponseType, Optional[list[dict[str, object]]]]:
+	def on_prompt(self) -> tuple[support.ResponseType, Optional[list[dict[str, object]]]]:
 		"""
 		Reaction on a valid prompt.
 		Returns a `tuple` containing:
 		- 0. The `ResponseType`.
 		- 1. The prompt result content, `None` if there isn't.
 		"""
-		if self.prompt.startswith(COMMAND):
-			return (types.ResponseType.COMMAND, self.parent.settings_manager.command(self.prompt))
+		if self.prompt.startswith(defaults.COMMAND_CHARACTER):
+			return (support.ResponseType.COMMAND, self.parent.settings_manager.command(self.prompt))
 		else:
-			return (types.ResponseType.AI_RESPONSE, self.parent.prompter.send(self.prompt))
+			return (support.ResponseType.AI_RESPONSE, self.parent.prompter.send(self.prompt))
 
 

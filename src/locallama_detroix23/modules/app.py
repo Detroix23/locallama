@@ -5,8 +5,6 @@
 
 import os
 
-import dotenv
-
 from locallama_detroix23.modules import (
 	defaults,
 	chat,
@@ -33,8 +31,6 @@ class App:
 		self, 
 		debug_level: int,
 	) -> None:
-		dotenv.load_dotenv()
-
 		host: str | None = os.getenv("HHN_OLLAMA_HOST")
 		self.host = host if host is not None else defaults.HOST
 		

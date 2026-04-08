@@ -5,6 +5,7 @@
 
 import requests
 import json
+import pprint
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -30,7 +31,7 @@ class Settings:
 		"""
 		Return a detailed list of the available models. Runs: 
 		```
-		api/tags
+		GET api/tags
 		```
 		If tags where already requested, return the cached tags `_cache_tags`.
 
@@ -51,7 +52,7 @@ class Settings:
 		"""
 		Return a detailed list of the currently running models. Runs: 
 		```
-		api/ps
+		GET api/ps
 		```
 		Reference: https://docs.ollama.com/api/ps
 		"""
@@ -62,6 +63,24 @@ class Settings:
 		content: dict[str, list[dict[str, object]]] = json.loads(request.content)
 		return content
 	
+	def get_model_info(self, name: str) -> dict[str, object]:
+		"""
+		Return JSON information about a specified model `name`.
+		```
+		POST api/show data=`name` 
+		```
+		Reference: https://docs.ollama.com/api-reference/show-model-details
+		"""
+		request: requests.Response = requests.post(
+			f"{self.parent.url}show",
+			json={
+				"model": name,
+			}
+		)
+
+		content: dict[str, object] = json.loads(request.content)
+		return content
+
 	def command(self, command: str) -> None:
 		"""
 		Execute the given `command`. 
@@ -69,7 +88,7 @@ class Settings:
 		arguments: list[str] = command.split(" ")
 		index: int = 0
 		while index < len(arguments):
-			if arguments[index] == "/model":
+			if arguments[index] == f"{defaults.COMMAND_CHARACTER}model":
 				if index >= len(arguments) - 1:
 					print(f"Current model: {self.command_model('')}")
 				else:
@@ -78,18 +97,28 @@ class Settings:
 					
 					index += 1
 
-			elif arguments[index] == "/list":
+			elif arguments[index] == f"{defaults.COMMAND_CHARACTER}list":
 				if index >= len(arguments) - 1:
 					self.command_list()
 				else:
 					self.command_list(arguments[index + 1])
 					index += 1
 
+			elif arguments[index] == f"{defaults.COMMAND_CHARACTER}details":
+				self.command_details(arguments[index + 1])
+				index += 1
+
 			else:
 				print(f"(!) Argument: {arguments[index]}")	
 				self.command_help()
 			
 			index += 1
+
+	def command_help(self) -> None:
+		"""
+		Prints a help to commands.
+		"""
+		print(defaults.HELP_CHAT_COMMANDS)	
 
 	def command_model(self, model: str) -> str:
 		"""
@@ -122,11 +151,14 @@ class Settings:
 		else:
 			print(f"(!) Option: {option}")
 
-	def command_help(self) -> None:
+	def command_details(self, name: str) -> None:
 		"""
-		Prints a help to commands.
+		Prints model `name` detailed information.
 		"""
-		print(defaults.HELP_CHAT_COMMANDS)	
+		if name in self.models_name:
+			pprint.pprint(self.get_model_info(name))
+		else:
+			print(f"(!) Model `{name}` not found. Run `/list`.")
 
 	def list_models_name(self) -> list[str]:
 		"""

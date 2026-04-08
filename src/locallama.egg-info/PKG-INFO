@@ -13,4 +13,12 @@ Requires-Python: >=3.12
 Description-Content-Type: text/markdown
 License-File: LICENSE.md
 Requires-Dist: dotenv
+Requires-Dist: requests
 Dynamic: license-file
+
+# Locallama.
+
+## Setup.
+Environment variables:
+- `HHN_OLLAMA_HOST`
+- `HHN_OLLAMA_PORT`

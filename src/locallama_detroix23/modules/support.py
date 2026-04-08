@@ -5,6 +5,11 @@
 
 import enum
 
+class ExitCode:
+	MODULE_ERROR: int = 1
+	CONNECTION_ERROR: int = 2
+
+
 class ConnectionError(Exception):
 	"""
 	# `ConnectionError` to the Ollama server.
@@ -41,4 +46,3 @@ class AiResponse:
 		self.response = response
 		self.model = model
 		self.date = date
-	

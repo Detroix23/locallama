@@ -12,3 +12,8 @@ src/locallama_detroix23/modules/__init__.py
 src/locallama_detroix23/modules/app.py
 src/locallama_detroix23/modules/chat.py
 src/locallama_detroix23/modules/controls.py
+src/locallama_detroix23/modules/debug.py
+src/locallama_detroix23/modules/defaults.py
+src/locallama_detroix23/modules/prompts.py
+src/locallama_detroix23/modules/settings.py
+src/locallama_detroix23/modules/types.py
